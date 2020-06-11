@@ -1,8 +1,9 @@
 <?php
+//openfile
 $text = file('word.txt');
 foreach($text as $index=>$value){
 	echo $value."<br>";
-   
+  //write file
 $handle = fopen("$value.txt", 'w+');
      
         $handle = fopen("$index.txt", 'w+');
@@ -10,6 +11,6 @@ $handle = fopen("$value.txt", 'w+');
 
         if(!fwrite($handle, str_repeat($value,100)))  die("couldn't write to file."); 
         echo "success  writing to file";
-}
+}  
     }
 ?>
