@@ -20,20 +20,31 @@ foreach($text as $index=>$value){
 
 $count = count($data);
 foreach($data as $index=>$value){
-$word = substr($value, 0, -2);//ตัดenterออก
-$big = strtoupper(substr($word,0,$count-($count-1)));//ตัวอักษรตัวแรก
+$word = strtolower(substr($value, 0, -2));//ตัดenterออก
+$big = substr($word,0,$count-($count-1));//ตัวอักษรตัวแรก
 $big2 = substr($word,1,$count);//ตัวอักษรหลังตัวแรก
     //if ตรวจสอบสอบว่ามีโฟลเดอร์นี้อยู่ไหม
     if(!@mkdir($big,0,true)){
         $path = $big;
-        $name = fopen($path."/".$word.".txt", 'w+');
-        if($name){
-          if(!fwrite($name, strtolower(str_repeat($value,100)))) {
-        		echo "success  writing to file";
+            $pos = strcspn(strtolower($big2), "aeiou");//aeiouอยู่ที่indexไหน
+            $word1 = strtolower(substr($big2,$pos,1));//สระ
+         $directorystructure = $path."/".$word1;
+            if(!@mkdir($directorystructure,0,true)){
+                    $name = fopen($directorystructure."/".$word.".txt", 'w+');
+                        if($name){
+                            if(!fwrite($name, strtolower(str_repeat($value,100)))) {
+        		                  echo "success  writing to file";
            }
-            
-            $pos = strcspn(strtolower($big2), "aeiou");//aeiouอยู่ที่indexไหนแต่ไม่ได้เริ่มด้วย0
-        }             
+            }
+        }    
+        else{
+                  $name = fopen($directorystructure."/".$word.".txt", 'w+');
+                        if($name){
+                            if(!fwrite($name, strtolower(str_repeat($value,100)))) {
+        		                  echo "success  writing to file";
+           }
+            }
+        }
     }
 }
 ?>
