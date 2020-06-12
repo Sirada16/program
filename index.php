@@ -16,35 +16,24 @@ foreach($text as $index=>$value){
 	  }
   }
   */
-  $data = file('text.txt');
-
-$count = count($data);
-foreach($data as $index=>$value){
-$word = strtolower(substr($value, 0, -2));//ตัดenterออก
-$big = substr($word,0,$count-($count-1));//ตัวอักษรตัวแรก
-$big2 = substr($word,1,$count);//ตัวอักษรหลังตัวแรก
-    //if ตรวจสอบสอบว่ามีโฟลเดอร์นี้อยู่ไหม
-    if(!@mkdir($big,0,true)){
-        $path = $big;
-            $pos = strcspn(strtolower($big2), "aeiou");//aeiouอยู่ที่indexไหน
-            $word1 = strtolower(substr($big2,$pos,1));//สระ
-         $directorystructure = $path."/".$word1;
-            if(!@mkdir($directorystructure,0,true)){
-                    $name = fopen($directorystructure."/".$word.".txt", 'w+');
-                        if($name){
-                            if(!fwrite($name, strtolower(str_repeat($value,100)))) {
-        		                  echo "success  writing to file";
-           }
-            }
-        }    
-        else{
-                  $name = fopen($directorystructure."/".$word.".txt", 'w+');
-                        if($name){
-                            if(!fwrite($name, strtolower(str_repeat($value,100)))) {
-        		                  echo "success  writing to file";
-           }
-            }
-        }
-    }
-}
+  //ข้อ 1-4
+  $data = file('word.txt');
+  $count_data = count($data);
+  foreach($data as $index=>$value){
+  $enter = array("\n","\r",' ');//ตัดenter
+  $value = strtolower(str_replace($enter,'',$value));
+  $first_word = substr($value,0,$count_data-($count_data-1));//ตัวอักษรตัวแรก
+  $word_after_first = substr($value,1,$count_data);//ตัวอักษรหลังตัวแรก
+  $check_vowel = strcspn(strtolower($value), "aeiou");//aeiouอยู่ที่indexไหน
+  $vowel = substr($value,$check_vowel,1);//สระ
+      //if ตรวจสอบว่ามีโฟลเดอร์นี้อยู่ไหม
+      if(@mkdir($first_word."/".$vowel,0,true)){
+                      $name = fopen($first_word."/".$vowel."/".$value.".txt", 'w+');
+                              fwrite($name, str_repeat($value,100));
+                  }else{//สำหรับcaseที่aeiouซ้ำ
+                          $name = fopen($first_word."/".$vowel."/".$value.".txt", 'x+');
+                                  fwrite($name, str_repeat($value,100));
+                      }
+  }//endforeach
+  
 ?>
