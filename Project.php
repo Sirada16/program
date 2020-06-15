@@ -20,22 +20,25 @@ foreach($text as $index=>$value){
   $data = file('word.txt');
   $count_data = count($data);
   foreach($data as $index=>$value){
-  $enter = array("\n","\r",' ');
-  $value = strtolower(str_replace($enter,'',$value));
-  $first_word = strtoupper(substr($value,0,$count_data-($count_data-1)));//ตัวอักษรตัวแรก
-  $second_word = strtoupper(substr($value,1,($count_data)-($count_data-1)));//ตัวอักษรตัว2
-  $word_after_first = substr($value,1,$count_data);//ตัวอักษรหลังตัวแรก
-      echo $second_word;
-      //if ตรวจสอบว่ามีโฟลเดอร์นี้อยู่ไหม
-      if(!@mkdir($first_word."/".$second_word,0,true)){
-                      $myfile = fopen($first_word."/".$second_word."/".$first_word.$word_after_first.".txt", 'w+');
-                              fwrite($myfile, str_repeat($value,100));
-                  }else{//สำหรับcaseที่aeiouซ้ำ
-                      $myfile = fopen($first_word."/".$second_word."/".$first_word.$word_after_first.".txt", 'x+');
-                                  fwrite($myfile, str_repeat($value,100));
-                      }
+      $enter = array("\n","\r",' ');
+          $value = strtolower(str_replace($enter,'',$value));
+              $first_word = strtoupper(substr($value,0,$count_data-($count_data-1)));//ตัวอักษรตัวแรก
+                  $second_word = strtoupper(substr($value,1,$count_data-($count_data-1)));//ตัวอักษรตัว2
+                      $word_after_first = substr($value,1,$count_data);//ตัวอักษรหลังตัวแรก    
+                      //if ตรวจสอบว่ามีโฟลเดอร์นี้อยู่ไหม
+                      if(!file_exists($first_word."/".$second_word."/")){
+                          //echo "ไม่มีไฟล์ต้องสร้างไฟล์";
+                              if(@mkdir($first_word."/".$second_word,0,true)){
+                                  $myfile = fopen($first_word."/".$second_word."/".$first_word.$word_after_first.".txt", 'w+');
+                                              fwrite($myfile, str_repeat($value."\r\n",100));
+                              }
+  
+                      }else{
+                              $myfile = fopen($first_word."/".$second_word."/".$first_word.$word_after_first.".txt", 'w+');
+                                          fwrite($myfile, str_repeat($value."\r\n",100));
+                      }       
   ini_set('max_execution_time', 800);
   
   }//endforeach
-  
+  fclose($myfile);
 ?>
